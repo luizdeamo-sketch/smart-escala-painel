@@ -10,6 +10,31 @@
 .pa .fds{background:#fff4e0}.pa .fer{background:#fde2e2}.pa .tot{font-weight:bold;background:#fafafa}
 .pa .leg{display:flex;gap:14px;margin-top:0;font-size:11px;color:#444}.pa .leg i{display:inline-block;width:10px;height:10px;margin-right:4px;vertical-align:middle}
 .pa .atencao{margin-top:10px;border-left:4px solid #d97706;background:#fffbeb;padding:6px 10px;font-size:12px}
+.pa .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pa .scroll table{min-width:880px}
+.pa td.t,.pa th.t{position:sticky;left:0;z-index:1;background:#fff;box-shadow:1px 0 0 #d4d4d4}
+.pa th.t{background:#f2f2f2}
+.pa .graf-m{display:none}
+.pa .gm-l{display:grid;grid-template-columns:78px 1fr 64px;align-items:center;gap:6px 8px;padding:5px 0;border-bottom:1px solid #eef0f6}
+.pa .gm-d{font-weight:700;font-size:13px}
+.pa .gm-b{display:block;height:16px;background:#eef0f6;border-radius:3px;overflow:hidden}
+.pa .gm-b i{display:block;height:100%;border-radius:3px}
+.pa .gm-v{text-align:right;font-size:12px;color:#666;white-space:nowrap}
+.pa .gm-v b{font-size:16px;color:#111;margin-right:4px}
+.pa .gm-v em{font-style:normal;font-size:11px}
+.pa .gm-e{grid-column:2 / 4;font-size:11px;margin-top:-2px}
+@media (max-width:760px){
+  .pa{padding:12px}
+  .pa h1{font-size:17px}
+  .pa .topo{flex-direction:column;align-items:flex-start;gap:6px}
+  .pa .topo > div:last-child{text-align:left !important}
+  .pa .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
+  .pa .kpi b{font-size:22px}
+  .pa .graf-d{display:none}
+  .pa .graf-m{display:block}
+  .pa th,.pa td{font-size:12px;padding:5px 7px}
+  .pa .leg{flex-wrap:wrap;gap:6px 12px}
+}
 .pa .quebra{break-before:page}.pa .rod{margin-top:14px;font-size:10px;color:#777;text-align:center}
 `;function He(e){let t=960/e.dias.length,n=Math.max(1,...e.dias.map(e=>e.abertos));return`<svg viewBox="0 0 1000 190" width="100%" role="img" aria-label="Plantões em aberto por dia">
     <line x1="20" y1="138" x2="980" y2="138" stroke="#999"/>${e.dias.map((e,r)=>{let i=Math.round(e.abertos/n*98),a=20+r*t+t*.18,o=t*.64,s=e.feriado?`#dc2626`:e.fimDeSemana?`#d97706`:`#2563eb`,c=e.total?Math.round(e.abertos/e.total*100):0,l=e.feriado?`FERIADO`:e.fimDeSemana?`fim de sem.`:``,u=a+o/2;return`<g>
@@ -19,8 +44,11 @@
         <text x="${u.toFixed(1)}" y="154" text-anchor="middle" font-size="12" font-weight="bold" fill="#111">${k[e.diaSemana]} ${j(e.data)}</text>
         <text x="${u.toFixed(1)}" y="168" text-anchor="middle" font-size="10" fill="${s}">${l}</text>
         ${e.feriado?`<text x="${u.toFixed(1)}" y="181" text-anchor="middle" font-size="9" fill="#b91c1c">${M(e.feriado.length>14?e.feriado.slice(0,13)+`…`:e.feriado)}</text>`:``}
-      </g>`}).join(``)}</svg>`}function R(e,t,n,r,i=!1){let a=t,o=Math.max(1,...t.flatMap(e=>e.porDia)),s=n.dias.map(e=>`<th class="${e.feriado?`fer`:e.fimDeSemana?`fds`:``}">${k[e.diaSemana]}<br>${j(e.data)}</th>`).join(``),c=(e,t)=>{let n=e?.12+e/o*.55:0,r=e?`background:rgba(220,38,38,${n.toFixed(2)})`:``;return`<td class="n ${t.feriado?`fer`:t.fimDeSemana?`fds`:``}" style="${r}">${e||``}</td>`},l=a.map(e=>`<tr><td class="t">${M(e.nome)}</td>${e.porDia.map((e,t)=>c(e,n.dias[t])).join(``)}<td class="n tot">${e.total}</td></tr>`).join(``),u=i?`<tr class="tot"><td class="t">Total em aberto no dia</td>${n.dias.map(e=>`<td class="n tot">${e.abertos||``}</td>`).join(``)}<td class="n tot">${n.totalAbertos}</td></tr>`:``;return`<h2>${e}</h2><table><thead><tr><th class="t">${r??(e.startsWith(`Setor`)?`Setor`:`Operação`)}</th>${s}<th>Total</th></tr></thead>
-    <tbody>${l||`<tr><td colspan="${n.dias.length+2}" class="t mut">Nenhum plantão em aberto no período.</td></tr>`}${u}</tbody></table>`}function z(e){let t=e.geradoEm.toLocaleString(`pt-BR`,{dateStyle:`short`,timeStyle:`short`}),n=e.totalPlantoes?Math.round(e.totalAbertos/e.totalPlantoes*100):0,r=[...e.dias].filter(e=>e.abertos>0).sort((e,t)=>t.abertos-e.abertos).slice(0,3),i=r.length?`<div class="atencao"><b>Maior pressão:</b> ${r.map(e=>`${k[e.diaSemana]} ${j(e.data)} (${e.abertos}${e.feriado?`, feriado: ${M(e.feriado)}`:e.fimDeSemana?`, fim de semana`:``})`).join(` · `)}</div>`:``;return`<div class="pa">
+      </g>`}).join(``)}</svg>`}function Ue(e){let t=Math.max(1,...e.dias.map(e=>e.abertos));return`<div class="graf-m">${e.dias.map(e=>{let n=e.feriado?`#dc2626`:e.fimDeSemana?`#d97706`:`#2563eb`,r=e.total?Math.round(e.abertos/e.total*100):0,i=e.feriado?`feriado: ${M(e.feriado)}`:e.fimDeSemana?`fim de semana`:``;return`<div class="gm-l"><span class="gm-d">${k[e.diaSemana]} ${j(e.data)}</span>
+        <span class="gm-b"><i style="width:${Math.max(2,Math.round(e.abertos/t*100))}%;background:${n}"></i></span>
+        <span class="gm-v"><b>${e.abertos}</b><em>${r}%</em></span>
+        ${i?`<span class="gm-e" style="color:${n}">${i}</span>`:``}</div>`}).join(``)}</div>`}function R(e,t,n,r,i=!1){let a=t,o=Math.max(1,...t.flatMap(e=>e.porDia)),s=n.dias.map(e=>`<th class="${e.feriado?`fer`:e.fimDeSemana?`fds`:``}">${k[e.diaSemana]}<br>${j(e.data)}</th>`).join(``),c=(e,t)=>{let n=e?.12+e/o*.55:0,r=e?`background:rgba(220,38,38,${n.toFixed(2)})`:``;return`<td class="n ${t.feriado?`fer`:t.fimDeSemana?`fds`:``}" style="${r}">${e||``}</td>`},l=a.map(e=>`<tr><td class="t">${M(e.nome)}</td>${e.porDia.map((e,t)=>c(e,n.dias[t])).join(``)}<td class="n tot">${e.total}</td></tr>`).join(``),u=i?`<tr class="tot"><td class="t">Total em aberto no dia</td>${n.dias.map(e=>`<td class="n tot">${e.abertos||``}</td>`).join(``)}<td class="n tot">${n.totalAbertos}</td></tr>`:``;return`<h2>${e}</h2><div class="scroll"><table><thead><tr><th class="t">${r??(e.startsWith(`Setor`)?`Setor`:`Operação`)}</th>${s}<th>Total</th></tr></thead>
+    <tbody>${l||`<tr><td colspan="${n.dias.length+2}" class="t mut">Nenhum plantão em aberto no período.</td></tr>`}${u}</tbody></table></div>`}function z(e){let t=e.geradoEm.toLocaleString(`pt-BR`,{dateStyle:`short`,timeStyle:`short`}),n=e.totalPlantoes?Math.round(e.totalAbertos/e.totalPlantoes*100):0,r=[...e.dias].filter(e=>e.abertos>0).sort((e,t)=>t.abertos-e.abertos).slice(0,3),i=r.length?`<div class="atencao"><b>Maior pressão:</b> ${r.map(e=>`${k[e.diaSemana]} ${j(e.data)} (${e.abertos}${e.feriado?`, feriado: ${M(e.feriado)}`:e.fimDeSemana?`, fim de semana`:``})`).join(` · `)}</div>`:``;return`<div class="pa">
   <div class="topo"><div><h1>Plantões em aberto${e.foco?` — ${M(e.foco)}`:``}</h1><span class="mut">Sem médico alocado · hoje e próximos 15 dias (${j(e.inicio)} a ${j(e.fim)})</span></div>
     <div class="mut" style="text-align:right"><b style="font-size:13px;color:#111">CallMed · Smart Escala</b><br>Posição em ${t}</div></div>
   <div class="kpis">
@@ -31,16 +59,17 @@
   </div>
   ${i}
   <h2>Em aberto por dia</h2>
-  ${He(e)}
+  <div class="graf-d">${He(e)}</div>
+  ${Ue(e)}
   <div class="leg"><span><i style="background:#2563eb"></i>dia útil</span><span><i style="background:#d97706"></i>fim de semana</span><span><i style="background:#dc2626"></i>feriado</span></div>
   ${e.foco?R(`Faltam, por setor e horário`,e.operacoes,e,`Setor · horário`,!0):`${R(`Por operação (hospital)`,e.operacoes,e)}
   <div class="quebra">${R(`Setores com plantões em aberto`,e.setores,e)}</div>`}
   <p class="rod">Plantão em aberto = sem médico alocado. Fonte: Smart Escala (espelho do Pega Plantão), posição em ${t}.</p>
-</div>`}function Ue(e){return`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Plantões em aberto${e.foco?` ${M(e.foco)}`:``} ${j(e.inicio)} a ${j(e.fim)}</title>
+</div>`}function We(e){return`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Plantões em aberto${e.foco?` ${M(e.foco)}`:``} ${j(e.inicio)} a ${j(e.fim)}</title>
 <style>@page{size:A4 landscape;margin:10mm}*{box-sizing:border-box}body{margin:0;background:#eee}${L}
 .pa{max-width:1100px;margin:auto}.nao-imprimir{max-width:1100px;margin:10px auto;text-align:right;font:13px Arial}
-@media print{body{background:#fff}.pa{font-size:12px}.pa .kpis{margin-top:8px}.nao-imprimir{display:none}.pa{padding:0;max-width:none}.pa .kpi,.pa tr,.pa svg{break-inside:avoid}}
+@media print{.pa .graf-m{display:none !important}.pa .graf-d{display:block !important}.pa .scroll{overflow:visible}.pa .scroll table{min-width:0}.pa td.t,.pa th.t{position:static;box-shadow:none}body{background:#fff}.pa{font-size:12px}.pa .kpis{margin-top:8px}.nao-imprimir{display:none}.pa{padding:0;max-width:none}.pa .kpi,.pa tr,.pa svg{break-inside:avoid}}
 </style></head><body>
 <div class="nao-imprimir"><button onclick="window.print()">Imprimir / salvar em PDF</button></div>
 ${z(e)}
-</body></html>`}function We(e){let t=window.open(``,`_blank`);if(!t)throw Error(`O navegador bloqueou a nova aba. Libere pop-ups para este site e tente de novo.`);t.document.open(),t.document.write(Ue(e)),t.document.close(),t.focus(),setTimeout(()=>t.print(),400)}var Ge=`https://nykkxupveodbqldukejo.supabase.co`,B=`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a2t4dXB2ZW9kYnFsZHVrZWpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyNTA1MzIsImV4cCI6MjEwMjgyNjUzMn0.96AKAmwsA_ctBv8O--anHbyAnLNF084Tj0PiNzk4CKE`,V=new URLSearchParams(location.search).get(`t`)??location.hash.replace(/^#t=/,``),H=e=>document.getElementById(e),U=H(`conteudo`),W=H(`aviso`),G=H(`erro`),K=H(`barra`),q=H(`visao`),J=document.createElement(`style`);J.textContent=L,document.head.appendChild(J);var Y=null,X=null;function Z(e){K.hidden=!0,U.innerHTML=``,G.hidden=!1,G.textContent=e}async function Ke(){let e=await fetch(`${Ge}/rest/v1/rpc/tracking_painel_publico`,{method:`POST`,headers:{"Content-Type":`application/json`,apikey:B,Authorization:`Bearer ${B}`},body:JSON.stringify({p_token:V})});if(!e.ok)throw Error(`Falha ao consultar (${e.status})`);return await e.json()}function Q(){if(!Y)return;let e=[];for(let t of Y.linhas)for(let n=0;n<t.n;n++)e.push({data:t.data,hora_inicio:t.hora_inicio,hora_fim:t.hora_fim,local:`${t.operacao} - ${t.setor}`,operacao:t.operacao,setor:t.setor,status:t.status,anunciado:t.anunciado});let t=q.value||null,n=Be(e);if(q.options.length!==n.length+1){let e=q.value;q.innerHTML=`<option value="">Geral (todas as operações)</option>`+n.map(e=>`<option value="${e.replace(/"/g,`&quot;`)}">${e}</option>`).join(``),q.value=n.includes(e)?e:``}X=Ve(e,new Date(`${Y.hoje}T12:00:00`),Y.feriados,t),U.innerHTML=z(X),W.textContent=`Atualiza sozinho a cada 5 minutos.`,K.hidden=!1,G.hidden=!0}async function $(){try{let e=await Ke();if(!e.ok)return Z(`Este link não está mais ativo. Peça um link novo à coordenação.`);Y=e,Q()}catch(e){Y?W.textContent=`Não consegui atualizar agora (${e instanceof Error?e.message:`erro`}). Mostrando a última posição.`:Z(`Não foi possível carregar o painel agora. Tente de novo em instantes.`)}}V?(q.addEventListener(`change`,Q),H(`atualizar`).addEventListener(`click`,()=>void $()),H(`pdf`).addEventListener(`click`,()=>{if(X)try{We(X)}catch(e){W.textContent=e instanceof Error?e.message:`Não consegui abrir o PDF.`}}),$(),setInterval(()=>void $(),3e5)):Z(`Link incompleto. Use o endereço completo que você recebeu.`);
+</body></html>`}function Ge(e){let t=window.open(``,`_blank`);if(!t)throw Error(`O navegador bloqueou a nova aba. Libere pop-ups para este site e tente de novo.`);t.document.open(),t.document.write(We(e)),t.document.close(),t.focus(),setTimeout(()=>t.print(),400)}var Ke=`https://nykkxupveodbqldukejo.supabase.co`,B=`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a2t4dXB2ZW9kYnFsZHVrZWpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyNTA1MzIsImV4cCI6MjEwMjgyNjUzMn0.96AKAmwsA_ctBv8O--anHbyAnLNF084Tj0PiNzk4CKE`,V=new URLSearchParams(location.search).get(`t`)??location.hash.replace(/^#t=/,``),H=e=>document.getElementById(e),U=H(`conteudo`),W=H(`aviso`),G=H(`erro`),K=H(`barra`),q=H(`visao`),J=document.createElement(`style`);J.textContent=L,document.head.appendChild(J);var Y=null,X=null;function Z(e){K.hidden=!0,U.innerHTML=``,G.hidden=!1,G.textContent=e}async function qe(){let e=await fetch(`${Ke}/rest/v1/rpc/tracking_painel_publico`,{method:`POST`,headers:{"Content-Type":`application/json`,apikey:B,Authorization:`Bearer ${B}`},body:JSON.stringify({p_token:V})});if(!e.ok)throw Error(`Falha ao consultar (${e.status})`);return await e.json()}function Q(){if(!Y)return;let e=[];for(let t of Y.linhas)for(let n=0;n<t.n;n++)e.push({data:t.data,hora_inicio:t.hora_inicio,hora_fim:t.hora_fim,local:`${t.operacao} - ${t.setor}`,operacao:t.operacao,setor:t.setor,status:t.status,anunciado:t.anunciado});let t=q.value||null,n=Be(e);if(q.options.length!==n.length+1){let e=q.value;q.innerHTML=`<option value="">Geral (todas as operações)</option>`+n.map(e=>`<option value="${e.replace(/"/g,`&quot;`)}">${e}</option>`).join(``),q.value=n.includes(e)?e:``}X=Ve(e,new Date(`${Y.hoje}T12:00:00`),Y.feriados,t),U.innerHTML=z(X),W.textContent=`Atualiza sozinho a cada 5 minutos.`,K.hidden=!1,G.hidden=!0}async function $(){try{let e=await qe();if(!e.ok)return Z(`Este link não está mais ativo. Peça um link novo à coordenação.`);Y=e,Q()}catch(e){Y?W.textContent=`Não consegui atualizar agora (${e instanceof Error?e.message:`erro`}). Mostrando a última posição.`:Z(`Não foi possível carregar o painel agora. Tente de novo em instantes.`)}}V?(q.addEventListener(`change`,Q),H(`atualizar`).addEventListener(`click`,()=>void $()),H(`pdf`).addEventListener(`click`,()=>{if(X)try{Ge(X)}catch(e){W.textContent=e instanceof Error?e.message:`Não consegui abrir o PDF.`}}),$(),setInterval(()=>void $(),3e5)):Z(`Link incompleto. Use o endereço completo que você recebeu.`);
